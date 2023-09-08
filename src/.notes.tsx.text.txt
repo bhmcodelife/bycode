@@ -1,0 +1,151 @@
+// src/store/index.js
+import { createStore } from 'redux';
+import rootReducer from './reducers';
+
+const store = createStore(rootReducer);
+
+export default store;
+// src/store/reducers.js
+const initialState = {
+  // Your initial state here
+};
+
+const rootReducer = (state = initialState, action) => {
+  switch (action.type) {
+    // Handle different action types here
+    default:
+      return state;
+  }
+};
+
+export default rootReducer;
+// src/main.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import store from './store';
+import App from './App';
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+);
+// src/App.js
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Home from './components/Home';
+import About from './components/About';
+
+function App() {
+  return (
+    <Router>
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route path="/about" component={About} />
+      </Switch>
+    </Router>
+  );
+}
+
+export default App;
+// src/components/Home.js
+import React from 'react';
+import { connect } from 'react-redux';
+
+function Home({ someValue }) {
+  return (
+    <div>
+      <p>Value from Redux: {someValue}</p>
+    </div>
+  );
+}
+
+const mapStateToProps = (state) => ({
+  someValue: state.someReducer.someValue, // Replace with your actual state structure
+});
+
+export default connect(mapStateToProps)(Home);
+
+
+//v2
+// src/store/index.js
+import { createStore } from 'redux';
+import rootReducer from './reducers';
+
+const store = createStore(rootReducer);
+
+export default store;
+// src/store/reducers.js
+const initialState = {
+  counter: 0,
+};
+
+const rootReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'INCREMENT':
+      return { ...state, counter: state.counter + 1 };
+    case 'DECREMENT':
+      return { ...state, counter: state.counter - 1 };
+    default:
+      return state;
+  }
+};
+
+export default rootReducer;
+// src/main.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import store from './store';
+import App from './App';
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+);
+// src/App.js
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Home from './components/Home';
+import About from './components/About';
+
+function App() {
+  return (
+    <Router>
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route path="/about" component={About} />
+      </Switch>
+    </Router>
+  );
+}
+
+export default App;
+// src/components/Home.js
+import React from 'react';
+import { connect } from 'react-redux';
+
+function Home({ counter, increment, decrement }) {
+  return (
+    <div>
+      <h1>Counter: {counter}</h1>
+      <button onClick={increment}>Increment</button>
+      <button onClick={decrement}>Decrement</button>
+    </div>
+  );
+}
+
+const mapStateToProps = (state) => ({
+  counter: state.counter,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  increment: () => dispatch({ type: 'INCREMENT' }),
+  decrement: () => dispatch({ type: 'DECREMENT' }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
